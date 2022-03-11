@@ -1,0 +1,2 @@
+export const HOTELS_DATA = "HOTELS_DATA";
+export const SHOW_REVIEWS_MODAL = "SHOW_REVIEWS_MODAL";

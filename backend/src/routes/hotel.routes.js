@@ -15,13 +15,47 @@ hotel_routes.get("/", (req, res) => {
   });
 });
 
-hotel_routes.get("/get-hotels", async (req, res) => {
+hotel_routes.get("/get-hotels/:sort_by", async (req, res) => {
   console.log("**********", "/get-hotels", "**********");
 
   const hotels = await hotelModel.find();
   console.log("hotels:", hotels);
 
-  res.json(hotels);
+  if (req.params.sort_by) {
+    const { sort_by } = req.params;
+
+    let hotels_sorted = [];
+
+    if (sort_by === "by_category_major" || sort_by === "by_category_minor") {
+      hotels_sorted = hotels.sort((a, b) => {
+        let b_parsed = parseFloat(b.category);
+        let a_parsed = parseFloat(a.category);
+
+        return b_parsed - a_parsed;
+      });
+
+      if (sort_by === "by_category_minor") {
+        hotels_sorted = hotels_sorted.reverse();
+      }
+    } else if (sort_by === "by_price_major" || sort_by === "by_price_minor") {
+      hotels_sorted = hotels.sort((a, b) => {
+        let b_parsed = parseFloat(b.price);
+        let a_parsed = parseFloat(a.price);
+
+        return b_parsed - a_parsed;
+      });
+
+      if (sort_by === "by_price_minor") {
+        hotels_sorted = hotels_sorted.reverse();
+      }
+    } else {
+      hotels_sorted = hotels;
+    }
+
+    res.json(hotels_sorted);
+  } else {
+    res.json(hotels);
+  }
 });
 
 hotel_routes.post("/insert-hotel", async (req, res) => {
@@ -31,12 +65,30 @@ hotel_routes.post("/insert-hotel", async (req, res) => {
   let return_obj = {};
 
   try {
-    const { hotel_name, category, price, photos, reviews } = req.body;
+    const {
+      hotel_name,
+      category,
+      price,
+      photos,
+      reviews,
+      hotel_desc,
+      hotel_location,
+    } = req.body;
 
-    if (hotel_name && category && price && photos && reviews) {
+    if (
+      hotel_name &&
+      category &&
+      price &&
+      photos &&
+      reviews &&
+      hotel_desc &&
+      hotel_location
+    ) {
       const newHotel = new hotelModel();
 
       newHotel.hotel_name = hotel_name;
+      newHotel.hotel_desc = hotel_desc;
+      newHotel.hotel_location = hotel_location;
       newHotel.category = category;
       newHotel.price = price;
       newHotel.photos = photos;
@@ -79,13 +131,33 @@ hotel_routes.put("/update-hotel", async (req, res) => {
 
   let return_obj = {};
 
-  const { id, hotel_name, category, price, photos, reviews } = req.body;
+  const {
+    id,
+    hotel_name,
+    category,
+    price,
+    photos,
+    reviews,
+    hotel_desc,
+    hotel_location,
+  } = req.body;
 
-  if (id && hotel_name && category && price && photos && reviews) {
+  if (
+    id &&
+    hotel_name &&
+    category &&
+    price &&
+    photos &&
+    reviews &&
+    hotel_desc &&
+    hotel_location
+  ) {
     const update_res = await hotelModel.findByIdAndUpdate(
       new mongoose.Types.ObjectId(id),
       {
         hotel_name,
+        hotel_desc,
+        hotel_location,
         category,
         price,
         photos,

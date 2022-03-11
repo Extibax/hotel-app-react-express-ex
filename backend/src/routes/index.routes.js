@@ -2,13 +2,13 @@
 import { Router } from "express";
 
 /* Routes */
-import reporte_routes from "./reporte.routes";
+import hotel_routes from "./hotel.routes";
 
 /* Initialization */
 const router = Router();
 
 /* External routes */
-router.use("/reporte", reporte_routes);
+router.use("/hotel", hotel_routes);
 
 /* Routes */
 router.get("/", (req, res) => {

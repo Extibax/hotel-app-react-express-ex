@@ -3,7 +3,7 @@ import { Router } from "express";
 import mongoose from "mongoose";
 
 /* Models */
-import hotelModel from "../models/reporte";
+import hotelModel from "../models/hotel";
 
 /* Init */
 const hotel_routes = Router();
@@ -18,10 +18,10 @@ hotel_routes.get("/", (req, res) => {
 hotel_routes.get("/get-hotels", async (req, res) => {
   console.log("**********", "/get-hotels", "**********");
 
-  const reportes = await hotelModel.find();
-  console.log("hotels:", reportes);
+  const hotels = await hotelModel.find();
+  console.log("hotels:", hotels);
 
-  res.json(reportes);
+  res.json(hotels);
 });
 
 hotel_routes.post("/insert-hotel", async (req, res) => {
@@ -31,57 +31,24 @@ hotel_routes.post("/insert-hotel", async (req, res) => {
   let return_obj = {};
 
   try {
-    const {
-      concepto,
-      fecha_desde,
-      fecha_desde_raw,
-      fecha_hasta,
-      fecha_hasta_raw,
-      nombre,
-      posicion,
-      departamento,
-      supervisor,
-      gastos,
-      aprobado_por,
-      firma,
-    } = req.body;
+    const { hotel_name, category, price, photos, reviews } = req.body;
 
-    if (
-      concepto &&
-      fecha_desde &&
-      fecha_desde_raw &&
-      fecha_hasta &&
-      fecha_hasta_raw &&
-      nombre &&
-      posicion &&
-      departamento &&
-      supervisor &&
-      gastos &&
-      aprobado_por &&
-      firma
-    ) {
-      const newReporte = new hotelModel();
+    if (hotel_name && category && price && photos && reviews) {
+      const newHotel = new hotelModel();
 
-      newReporte.concepto = concepto;
-      newReporte.fecha_desde = fecha_desde;
-      newReporte.fecha_desde_raw = fecha_desde_raw;
-      newReporte.fecha_hasta = fecha_hasta;
-      newReporte.fecha_hasta_raw = fecha_hasta_raw;
-      newReporte.nombre = nombre;
-      newReporte.posicion = posicion;
-      newReporte.departamento = departamento;
-      newReporte.supervisor = supervisor;
-      newReporte.gastos = gastos;
-      newReporte.aprobado_por = aprobado_por;
-      newReporte.firma = firma;
+      newHotel.hotel_name = hotel_name;
+      newHotel.category = category;
+      newHotel.price = price;
+      newHotel.photos = photos;
+      newHotel.reviews = reviews;
 
-      const reporte_save_res = await newReporte.save();
+      const hotel_save_res = await newHotel.save();
 
-      console.log("reporte_save_res:", reporte_save_res);
+      console.log("hotel_save_res:", hotel_save_res);
 
       return_obj = {
-        message: "new reporte saved",
-        reporte_save_res,
+        message: "new hotel saved",
+        hotel_save_res,
       };
 
       console.log("return_obj:", return_obj);
@@ -112,52 +79,17 @@ hotel_routes.put("/update-hotel", async (req, res) => {
 
   let return_obj = {};
 
-  const {
-    id,
-    concepto,
-    fecha_desde,
-    fecha_desde_raw,
-    fecha_hasta,
-    fecha_hasta_raw,
-    nombre,
-    posicion,
-    departamento,
-    supervisor,
-    gastos,
-    aprobado_por,
-    firma,
-  } = req.body;
+  const { id, hotel_name, category, price, photos, reviews } = req.body;
 
-  if (
-    id &&
-    concepto &&
-    fecha_desde &&
-    fecha_desde_raw &&
-    fecha_hasta &&
-    fecha_hasta_raw &&
-    nombre &&
-    posicion &&
-    departamento &&
-    supervisor &&
-    gastos &&
-    aprobado_por &&
-    firma
-  ) {
+  if (id && hotel_name && category && price && photos && reviews) {
     const update_res = await hotelModel.findByIdAndUpdate(
       new mongoose.Types.ObjectId(id),
       {
-        concepto,
-        fecha_desde,
-        fecha_desde_raw,
-        fecha_hasta,
-        fecha_hasta_raw,
-        nombre,
-        posicion,
-        departamento,
-        supervisor,
-        gastos,
-        aprobado_por,
-        firma,
+        hotel_name,
+        category,
+        price,
+        photos,
+        reviews,
       }
     );
 
@@ -165,7 +97,7 @@ hotel_routes.put("/update-hotel", async (req, res) => {
       console.log("update_res:", update_res);
 
       return_obj = {
-        message: "new reporte updated",
+        message: "new hotel updated",
         update_res,
       };
 
@@ -199,7 +131,7 @@ hotel_routes.delete("/delete-hotel", async (req, res) => {
       console.log("delete_res:", delete_res);
 
       return_obj = {
-        message: "reported deleted",
+        message: "hotel deleted",
       };
 
       console.log("normal id:", id);

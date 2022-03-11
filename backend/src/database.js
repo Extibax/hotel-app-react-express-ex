@@ -11,7 +11,6 @@ async function run() {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        /* useFindAndModify: false, */
       }
     );
     console.log("database is conected");

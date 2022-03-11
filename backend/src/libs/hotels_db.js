@@ -9,13 +9,10 @@ const { ENVIRONMENT, MONGO_URL_DEV, MONGO_URL_PROD, MONGO_POOL_SIZE } = config;
 const MongoHotels = new Mongoose();
 const IS_PROD = ENVIRONMENT === "prod" ? true : false;
 const MAINTENANCE_MODE = false;
-const POOL_SIZE = MONGO_POOL_SIZE;
 
-// Do not connect to MongoDB when in maintenance mode
 if (MAINTENANCE_MODE !== "true") {
   const commonOptions = {
     useNewUrlParser: true,
-    /* useCreateIndex: true, */
     useUnifiedTopology: true,
   };
 
@@ -27,11 +24,7 @@ if (MAINTENANCE_MODE !== "true") {
         ...commonOptions,
       };
 
-  /* if (POOL_SIZE) mongooseOptions.poolSize = Number(POOL_SIZE); */
-
   const NODE_DB_URI = ENVIRONMENT === "dev" ? MONGO_URL_DEV : MONGO_URL_PROD;
-
-  /* MongoHotels.set("useFindAndModify", false); */
 
   MongoHotels.connect(NODE_DB_URI, mongooseOptions)
     .then(() => console.log("Connected with Mongoose."))

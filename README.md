@@ -1,7 +1,7 @@
 # hotel-app-react-express-ex
 Backend
 
-Routas
+Routes
 ``` 
 GET
 http://localhost:3001/api/hotel/get-hotels

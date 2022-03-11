@@ -26,4 +26,24 @@ export const BodyStyles = styled.div`
   .filter_button:last-child {
     margin-right: 0;
   }
+
+  @media only screen and (max-device-width: 900px) {
+    .filter_buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .filter_button {
+      margin-right: 0px;
+      margin-bottom: 10px;
+    }
+
+    .hotels_list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 `;

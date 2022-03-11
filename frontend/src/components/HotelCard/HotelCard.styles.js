@@ -86,11 +86,33 @@ export const HotelCardStyles = styled.div`
   .ant-carousel {
     height: 200px !important;
     width: 350px !important;
-    /* overflow: hidden; */
   }
 
   .slick-track {
     height: 200px !important;
     width: 350px !important;
+  }
+
+  @media only screen and (max-device-width: 900px) {
+    .hotel_info {
+      padding: 0px;
+      margin-top: 10px;
+    }
+
+    .hotel_card {
+      display: flex;
+      flex-direction: column;
+      margin: 0 20px;
+    }
+
+    .ant-carousel {
+      height: 200px !important;
+      width: 300px !important;
+    }
+
+    .slick-track {
+      height: 200px !important;
+      width: 300px !important;
+    }
   }
 `;

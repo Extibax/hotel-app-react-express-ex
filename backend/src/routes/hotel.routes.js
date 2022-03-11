@@ -15,8 +15,17 @@ hotel_routes.get("/", (req, res) => {
   });
 });
 
-hotel_routes.get("/get-hotels/:sort_by", async (req, res) => {
+hotel_routes.get("/get-hotels", async (req, res) => {
   console.log("**********", "/get-hotels", "**********");
+
+  const hotels = await hotelModel.find();
+  console.log("hotels:", hotels);
+
+  res.json(hotels);
+});
+
+hotel_routes.get("/get-hotels/:sort_by", async (req, res) => {
+  console.log("**********", "/get-hotels/:sort_by", "**********");
 
   const hotels = await hotelModel.find();
   console.log("hotels:", hotels);
